@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour
+public partial class PlayerController : NetworkBehaviour
 {
     [field: SerializeField]
     public int MaxHealth { get; private set; } = 100;
@@ -20,6 +21,23 @@ public class PlayerController : MonoBehaviour
     private Transform groundCheck;
     private float groundCheckRadius = 0.2f;
 
+    private Camera playerCamera;
+
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (base.IsOwner)
+        {
+            playerCamera = Camera.main;
+            playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y, playerCamera.transform.position.z);
+            playerCamera.transform.SetParent(transform);
+        }
+        else
+        {
+            gameObject.GetComponent<PlayerController>().enabled = false;
+        }
+    }
 
     private void Awake()
     {
@@ -40,6 +58,8 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        UpdateGun();
     }
 
     private void FixedUpdate()
