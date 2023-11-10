@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 4098338344230004757}
   - component: {fileID: 2089392594532467748}
   - component: {fileID: 4098338344230004758}
+  - component: {fileID: 1884088714636657364}
   - component: {fileID: 4098338344230004759}
   - component: {fileID: 4098338344230004756}
   - component: {fileID: 4757677608622127341}
@@ -89,7 +90,9 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 2089392594532467748}
   - {fileID: 4098338344230004758}
+  - {fileID: 1884088714636657364}
   - {fileID: 4757677608622127341}
+  - {fileID: 257933099483564805}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
@@ -145,13 +148,34 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  spawnDelay: 5
+  playerDeathComponents:
+    sprite: {fileID: 4098338344847176885}
+    playerController: {fileID: 4098338344230004758}
+    collider: {fileID: 4098338344230004756}
+    rigidbody: {fileID: 0}
   bulletSpeed: 25
   gun: {fileID: 4098338345654605506}
   bullet: {fileID: 800195420264444451, guid: 20681bdb745ed5845ad5463eb8895fba, type: 3}
   bulletSpawn: {fileID: 4098338344709968984}
-  flipThreshold: 90
   spriteRenderer: {fileID: 4098338344847176885}
-  flipped: 0
+--- !u!114 &1884088714636657364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4098338344230004754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ca752d655759143a04291f59c344e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 2
+  _addedNetworkObject: {fileID: 4098338344230004757}
+  _networkObjectCache: {fileID: 4098338344230004757}
+  objToSpawn: {fileID: 309755086539817442, guid: 033dd11b3aa0e03409a30f17d1304ff9, type: 3}
+  spawnedObject: {fileID: 0}
 --- !u!50 &4098338344230004759
 Rigidbody2D:
   serializedVersion: 4
@@ -211,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 3
   _addedNetworkObject: {fileID: 4098338344230004757}
   _networkObjectCache: {fileID: 4098338344230004757}
   _componentConfiguration: 0
@@ -269,8 +293,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4098338344396672780}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.816, y: 0, z: 0}
-  m_LocalScale: {x: 0.58124995, y: 0.153125, z: 1}
+  m_LocalPosition: {x: 0.234, y: 0, z: 0}
+  m_LocalScale: {x: 0.58125, y: 0.153125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4098338344709968984}
@@ -317,7 +341,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.8836478, g: 1, b: 0.995258, a: 1}
   m_FlipX: 0
@@ -489,9 +513,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 4098338344230004757}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 4098338344230004757}
   _componentConfiguration: 0
   _synchronizeParent: 0
   _packing:

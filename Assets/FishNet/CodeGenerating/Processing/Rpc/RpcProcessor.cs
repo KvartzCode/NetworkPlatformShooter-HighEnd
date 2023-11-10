@@ -1035,7 +1035,7 @@ namespace FishNet.CodeGenerating.Processing.Rpc
             insts.AddRange(CreateSendRpcCommon(processor, methodHash, writerVariableDef, channelVariableDef, rpcAttribute));
             //Also add if buffered.
             bool bufferLast = rpcAttribute.GetField(BUFFERLAST_NAME, false);
-            bool excludeOwner = rpcAttribute.GetField(EXCLUDEOWNER_NAME, false);
+            bool excludeOwner = rpcAttribute.GetField(EXCLUDEOWNER_NAME, true);
             bool excludeServer = rpcAttribute.GetField(EXCLUDESERVER_NAME, false);
 
             //Warn user if any values are byref.

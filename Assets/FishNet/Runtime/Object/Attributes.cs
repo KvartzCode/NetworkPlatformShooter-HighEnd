@@ -59,7 +59,7 @@ namespace FishNet.Object
         /// <summary>
         /// True to exclude the owner from receiving this RPC.
         /// </summary>
-        public bool ExcludeOwner = false;
+        public bool ExcludeOwner = true;
         /// <summary>
         /// True to prevent the connection from receiving this Rpc if they are also server.
         /// </summary>

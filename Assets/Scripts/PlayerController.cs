@@ -27,6 +27,18 @@ public partial class PlayerController : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
+
+        if (base.IsServer)
+        {
+            var player = new PlayerManager.Player() {
+                maxHealth = 100,
+                health = 100,
+                playerObject = gameObject,
+                connection = GetComponent<NetworkObject>().Owner
+            };
+            PlayerManager.instance.players.Add(gameObject.GetInstanceID(), player);
+        }
+
         if (base.IsOwner)
         {
             playerCamera = Camera.main;
@@ -83,14 +95,12 @@ public partial class PlayerController : NetworkBehaviour
 
     public void Damage(int amount)
     {
-        Health -= amount;
-        if (Health < 0)
-            Die();
-    }
+        if (!base.IsOwner)
+            return;
 
-    private void Die()
-    {
-        Debug.LogWarning("I Died!");
-        //TODO: Death logic if there's time.
+        PlayerManager.instance.DamagePlayer(gameObject.GetInstanceID(), amount);
+        //Health -= amount;
+        //if (Health < 0)
+        //    Die();
     }
 }

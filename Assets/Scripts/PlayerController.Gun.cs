@@ -6,18 +6,13 @@ using UnityEngine;
 public partial class PlayerController
 {
     [Header("Gun")]
-    public float bulletSpeed = 50;
+    public float bulletSpeed = 20;
 
     [SerializeField] GameObject gun;
     [SerializeField] GameObject bullet;
     [SerializeField] Transform bulletSpawn;
 
-    //public Transform childTransform; // Reference to the child object
-    public float flipThreshold = 90; // Adjust this threshold to control when the flip happens
-    //public float childRotation;
-
     [SerializeField] SpriteRenderer spriteRenderer;
-    public bool flipped = false;
 
 
     private void UpdateGun()
@@ -38,25 +33,47 @@ public partial class PlayerController
 
     private void Shoot()
     {
-        GameObject bulletClone = Instantiate(bullet);
-        bulletClone.transform.position = bulletSpawn.position;
-        bulletClone.transform.rotation = gun.transform.rotation;
+        Vector3 position = bulletSpawn.position;
+        Quaternion rotation = gun.transform.rotation;
+        Vector3 velocity = bulletSpawn.right * bulletSpeed;
 
-        bulletClone.GetComponent<Rigidbody2D>().velocity = bulletSpawn.right * bulletSpeed;
+        SpawnBullet(position, rotation, velocity);
+        ShootServer(position, rotation, velocity);
+    }
+
+    private void SpawnBullet(Vector3 position, Quaternion rotation, Vector3 velocity)
+    {
+        GameObject bulletClone = Instantiate(bullet);
+        bulletClone.transform.position = position;
+        bulletClone.transform.rotation = rotation;
+        bulletClone.GetComponent<Rigidbody2D>().velocity = velocity;
+
+        Physics2D.IgnoreCollision(bulletClone.GetComponent<Collider2D>(), gameObject.GetComponent<Collider2D>());
+    }
+
+    [ServerRpc]
+    private void ShootServer(Vector3 position, Quaternion rotation, Vector3 velocity)
+    {
+        ShootClient(position, rotation, velocity);
+    }
+
+    [ObserversRpc]
+    private void ShootClient(Vector3 position, Quaternion rotation, Vector3 velocity)
+    {
+        SpawnBullet(position, rotation, velocity);
     }
 
     private void FlipSprite(float rotZ)
     {
-        if (rotZ > flipThreshold && rotZ < 270 && !flipped)
+        // Flips player sprite when weapon is rotated more on the left side of the player.
+        if (Mathf.Abs(rotZ) > 90)
         {
             spriteRenderer.flipX = true;
-            flipped = true;
             FlipSpriteServer(gameObject, true);
         }
-        else if (rotZ < flipThreshold || rotZ > 270 && flipped)
+        else
         {
             spriteRenderer.flipX = false;
-            flipped = false;
             FlipSpriteServer(gameObject, false);
         }
     }
@@ -70,7 +87,6 @@ public partial class PlayerController
     [ObserversRpc]
     private void FlipSpriteClient(GameObject player, bool flipped)
     {
-        player.GetComponent<PlayerController>().flipped = flipped;
         player.GetComponent<PlayerController>().spriteRenderer.flipX = flipped;
     }
 }
