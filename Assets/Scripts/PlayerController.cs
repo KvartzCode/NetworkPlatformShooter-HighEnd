@@ -95,7 +95,7 @@ public partial class PlayerController : NetworkBehaviour
 
     public void Damage(int amount)
     {
-        if (!base.IsOwner)
+        if (!base.IsHost)
             return;
 
         PlayerManager.instance.DamagePlayer(gameObject.GetInstanceID(), amount);

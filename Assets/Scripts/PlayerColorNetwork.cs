@@ -26,6 +26,7 @@ public class PlayerColorNetwork : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
+            print("F");
             ChangeColorServer(gameObject, Random.ColorHSV(0, 1, 0, 1, 0, 1, 1, 1));
         }
     }
@@ -37,7 +38,7 @@ public class PlayerColorNetwork : NetworkBehaviour
         ChangeColor(player, color);
     }
 
-    [ObserversRpc]
+    [ObserversRpc(ExcludeOwner = false)]
     public void ChangeColor(GameObject player, Color color)
     {
         player.GetComponent<PlayerColorNetwork>().body.GetComponent<Renderer>().material.color = color;
